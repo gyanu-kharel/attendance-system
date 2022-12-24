@@ -104,6 +104,13 @@ namespace Attendance.Application.Implementations
             await _userManager.UpdateAsync(user);
         }
 
+        public async Task<bool> EmailExistsAsync(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email.ToUpper());
+
+            return user != null;
+        }
+
         #endregion
 
         #region Private methods

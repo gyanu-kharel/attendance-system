@@ -65,8 +65,12 @@ namespace Attendance.Application.Implementations
             if(!string.IsNullOrEmpty(data.Name))
                 employee.Name = data.Name;
 
-            if(!string.IsNullOrEmpty(data.Email))
+            var emailExists = await _authService.EmailExistsAsync(data.Email);
+
+            if(!string.IsNullOrEmpty(data.Email) && !emailExists)
                 await _authService.UpdateUserEmailAsync(employee.ApplicationUserId, data.Email);
+
+            employee.IsActive = data.isActive;
 
             _dbContext.Employees.Update(employee);
             await _dbContext.SaveChangesAsync();
